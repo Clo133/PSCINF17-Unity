@@ -87,10 +87,18 @@ public class ChatboxController : MonoBehaviour
     {
         Debug.Log(args);
         System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
-        start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
+
+        //Nom du script Python
+        string PythonScriptName = "Assistant_pour_C#.py";
+        //Recuperation de l'adresse du script
+        string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
+        string scriptsFolderPath = Path.Combine(unityProjectPath, "Assets" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + PythonScriptName);
+
+        start.FileName = "python";
+        //start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
         //start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args);
-        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\\\PSC\\PSC ZIP\\PSC\\Assets\\Scripts\\Assistant_pour_C#.py \"{0}\"", args);
-        start.UseShellExecute = false; C: 
+        start.Arguments = string.Format(start.FileName + " \"{0}\"", args);
+        start.UseShellExecute = false;
         start.RedirectStandardOutput = true;
         using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(start))
         {
@@ -103,7 +111,7 @@ public class ChatboxController : MonoBehaviour
 
                 List<Token> tokens = Parser.Parser.Tokenize(result);
                 Node ast = Parser.Parser.Parse(tokens);
-                Parser.Parser.Execute(ast); // Renoie null.
+                Parser.Parser.Execute(ast); // Renvoie null.
 
             }
         }

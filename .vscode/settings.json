@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "PSC.sln"
+    "dotnet.defaultSolution": "PSCINF17-Unity.sln"
 }
