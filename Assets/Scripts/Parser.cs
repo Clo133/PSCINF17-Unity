@@ -114,7 +114,7 @@ namespace Parser {
       List<Node> build() {
         List<Node> nodes = new List<Node>();
 
-        if (tokens[idx].value != ")") {
+        if ((idx < tokens.Count) && tokens[idx].value != ")") {
           nodes.Add(new Node(tokens[idx], new List<Node>(0)));
           idx += 1;
         }
