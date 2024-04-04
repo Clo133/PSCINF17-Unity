@@ -55,8 +55,8 @@ while True:
 
         for message in messages:
             assert message.content[0].type == "text"
-            #print({message.role, ":"})
-            print(message.content[0].text.value)
+            if message.role =='assistant':
+                print(message.content[0].text.value)
             break
     
         client.beta.assistants.delete(assistant.id)

@@ -10,7 +10,11 @@ public class PlayerController : MonoBehaviour
     public TMP_InputField chatboxInputField;
     private bool isMoving;
     private Vector2 input;
-    
+    public Vector2 get_position()
+    {
+        return transform.position ;
+    }
+
     private Animator animator;
 
     public LayerMask solidObjectsLayer;

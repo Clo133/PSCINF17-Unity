@@ -11,7 +11,11 @@ public class AIController : MonoBehaviour
     private bool isMoving;
     public static bool isMovingBis = false;
 
-    private Vector2 input;
+    private Vector2 input; 
+    public Vector2 get_position()
+    {
+        return transform.position ;
+    }
     
     private Animator animator;
 
@@ -32,6 +36,19 @@ public class AIController : MonoBehaviour
         }
         //Animation
         //animator.SetBool("isMoving", isMoving);
+    }
+
+    public void set_position(Vector2 vector)
+    {
+        if (!isMoving)
+        {
+            var targetPos = transform.position;
+            targetPos.x = vector.x;
+            targetPos.y = vector.y;
+
+            if (IsWalkable(targetPos))
+                StartCoroutine(Move(targetPos));
+        }
     }
 
     private void Update()
