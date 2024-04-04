@@ -90,7 +90,7 @@ public class ChatboxController : MonoBehaviour
 
         //Nom du script Python
         string PythonScriptName = "Assistant_pour_C#.py";
-        Recuperation de l'adresse du script
+        //Recuperation de l'adresse du script
         string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
         string scriptsFolderPath = Path.Combine(unityProjectPath, "Assets" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + PythonScriptName);
         start.Arguments = string.Format(start.FileName + " \"{0}\"", args);
