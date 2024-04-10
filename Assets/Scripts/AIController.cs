@@ -31,22 +31,25 @@ public class AIController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     
-    public void move(Vector2 vector) {
-        if (!isMoving) {
-            var targetPos = transform.position;
-            targetPos.x += vector.x;
-            targetPos.y += vector.y;
-
-        if (IsWalkable(targetPos))
-        {
-        //{ yield return 
-                    StartCoroutine(Move(targetPos)); }
-        }
-        //Animation
-        //animator.SetBool("isMoving", isMoving);
+    public void move(List<Parser.Goal> deplacements_) {
+        /* if (!isMoving) {
+             var targetPos = transform.position;
+             targetPos.x += vector.x;
+             targetPos.y += vector.y;*/
+        StartCoroutine(Move(deplacements_));
     }
 
-    public void set_position(Vector2 vector)
+        //if (IsWalkable(targetPos))
+        //{
+        //{ yield return 
+                    
+
+       // }
+        //Animation
+        //animator.SetBool("isMoving", isMoving);
+   // }
+
+    public void set_position(Vector3 vector) // attention ne fait plus rien
     {
         //if (!isMoving)
         
@@ -54,9 +57,9 @@ public class AIController : MonoBehaviour
             targetPos.x = vector.x;
             targetPos.y = vector.y;
 
-            if (IsWalkable(targetPos))
-                StartCoroutine(Move(targetPos));
-        Move(targetPos);
+           // if (IsWalkable(targetPos))
+             //   StartCoroutine(Move(targetPos));
+       // Move(targetPos);
         
     }
 
@@ -117,17 +120,28 @@ public class AIController : MonoBehaviour
         animator.SetBool("isMoving", isMoving);*/
     }
 
-    IEnumerator Move(Vector3 targetPos)
+    IEnumerator Move(List<Parser.Goal> deplacements_)
     {
-        isMoving = true;
+    foreach (Parser.Goal move in deplacements_)
+    {
+        Vector3 targetPos = new Vector3() ;
+            Vector2 vec_ = move.get_vec();
+        bool relatif = move.get_relatif();
+        
+        if (relatif)
+        {
+            targetPos.x = transform.position.x + vec_.x ;
+            targetPos.y = transform.position.y + vec_.y ;
+        }
+
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = targetPos;
-
-        isMoving = false;
+    }
+    
     }
 
     private bool IsWalkable(Vector3 targetPos){

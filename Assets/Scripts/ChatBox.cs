@@ -112,7 +112,7 @@ public class ChatboxController : MonoBehaviour
                  chatboxText.text = "ChatGPT: " + result;
 
 
-                 string test = "LEFT(3), RIGHT(2)";
+                 string test = "RIGHT(5), DOWN(6)";
                  List<Token> tokens = Parser.Parser.Tokenize(test);
                  List<Node> forest = Parser.Parser.Parse(tokens);
                  Parser.Parser.Execute(forest); // Renvoie null 

@@ -56,10 +56,31 @@ namespace Parser {
     }
   }
 
+    public class Goal
+    {
+        private Vector2 vec;
+        private bool relatif; //true si déplacement relatif false si il faut se rendre en vec*
+
+        public Goal(Vector2 vec_, bool relatif_)
+        {
+            vec = vec_;
+            relatif = relatif_;
+        }
+        public Vector2 get_vec()
+        {
+            return vec;
+        }
+        public bool get_relatif()
+        {
+            return relatif;
+        }
+    }
+
   public class Parser {
         public static ChatboxController box = GameObject.FindObjectOfType(typeof(ChatboxController)) as ChatboxController;
         public static AIController aisprite = GameObject.FindObjectOfType(typeof(AIController)) as AIController;
         public static PlayerController playersprite = GameObject.FindObjectOfType(typeof(PlayerController)) as PlayerController;
+        public static List<Goal> deplacements = new List<Goal>() ; 
 
         public static bool IsDelimiter(char chr) {
     switch (chr) {
@@ -89,17 +110,17 @@ namespace Parser {
 
         if (i == sequence.Length) break;
         if (current_token_name.Count == 0) {
-        tokens.Add(new Token(TokenType.DELIMITER, current_character.ToString())); Debug.Log(current_character); 
+        tokens.Add(new Token(TokenType.DELIMITER, current_character.ToString())); 
                     i += 1;
         } else {
         string token_name = String.Join("", current_token_name); //concatène le tableau de string current_token_name en une unique string
           
         if (char.IsDigit(current_token_name[0])) {
-        tokens.Add(new Token(TokenType.INTEGER, token_name)); Debug.Log(token_name);
+        tokens.Add(new Token(TokenType.INTEGER, token_name)); 
         } else if (current_token_name[0] == '\'') {
-        tokens.Add(new Token(TokenType.STRING, token_name)); Debug.Log(token_name);
+        tokens.Add(new Token(TokenType.STRING, token_name)); 
         } else if (char.IsLetter(current_token_name[0])) {
-        tokens.Add(new Token(TokenType.INSTRUCTION, token_name)); Debug.Log(token_name);
+        tokens.Add(new Token(TokenType.INSTRUCTION, token_name)); 
                     } else {
                     //box.chatboxText.text = "Error: invalid token name:" + token_name + "t";
                     Debug.Log("Error: invalid token name:" + token_name);
@@ -133,7 +154,6 @@ namespace Parser {
             default:
                             box.chatboxText.text = "Misplaces delimiter:" + tokens[idx - 1].value;
                             break;
-                            //throw new ArgumentException("Misplaces delimiter:" + tokens[idx - 1].value);;
           }
         }
       
@@ -172,26 +192,31 @@ namespace Parser {
                     {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
-                    aisprite.move(Vector2.left * d);
+                    //aisprite.move(Vector2.left * d);
+                    Goal g = new Goal(Vector2.left * d, true);
+                    deplacements.Add(g);
 
                     return null;
                 case "RIGHT":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
-                    aisprite.move(Vector2.right * d);
+                    //aisprite.move(Vector2.right * d);
+                    deplacements.Add(new Goal(Vector2.right * d, true));
                     return null;
                 case "UP":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
-                    aisprite.move(Vector2.up * d);
+                    //aisprite.move(Vector2.up * d);
+                    deplacements.Add(new Goal(Vector2.up * d, true));
                     return null;
                 case "DOWN":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
-                    aisprite.move(Vector2.down * d);
+                    //aisprite.move(Vector2.down * d);
+                    deplacements.Add( new Goal(Vector2.down * d, true));
                     return null;
                 case "IDLE":
                     return null;
@@ -217,43 +242,14 @@ namespace Parser {
         public static object Execute(List<Node> forest) {
             
             for (int i = 0; i < forest.Count; i++)
-            { //while (aisprite.get_is_moving()) { time; } 
+            { 
                 Node ast = forest[i];
                 Instruction(ast);
                 Debug.Log("execute " + i + " " + ast.label.value);
             }
+            aisprite.move(deplacements);
             return null;
         }
-       /*foreach (Node ast in forest) {
-                switch (ast.label.type)
-                {
-                    case TokenType.INSTRUCTION:
-                        Debug.Log("Execute cas instruction");
-                        Instruction(ast);
-                        break;
-                    case TokenType.INTEGER:
-                        Debug.Log("Execute cas entier");
-                        //Int32.Parse(ast.label.value);
-                        break;
-                    case TokenType.STRING:
-                        Debug.Log("Execute cas string");
-                        //ast.label.value;
-                        break ;
-                    default:
-                        box.chatboxText.text = "Error!";
-                        break;
-                }
-          
-      }
-            return null;
-    } */
-
-       /* public static void Main(string[] args)
-        {
-            string str = "    GOTO ( POINT (\"A\", 7, 6 ) )";
-            List<Token> tokens = Tokenize(str);
-            Node ast = Parse(tokens);
-            Console.WriteLine(ast.label.value);
-        }   */  
+       
   }
 }
