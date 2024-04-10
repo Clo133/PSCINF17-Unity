@@ -86,19 +86,20 @@ public class ChatboxController : MonoBehaviour
     public void run_cmd(string args)
     {
         Debug.Log(args);
+
         System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
 
         //Nom du script Python
         string PythonScriptName = "Assistant_pour_C#.py";
         //Recuperation de l'adresse du script
-        string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
+        /* string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
         string scriptsFolderPath = Path.Combine(unityProjectPath, "Assets" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + PythonScriptName);
-        start.Arguments = string.Format(start.FileName + " \"{0}\"", args);
+        start.Arguments = string.Format(start.FileName + " \"{0}\"", args); */
         
-
-        /*start.FileName = "python";
+        
+        start.FileName = "python";
         start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
-        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args); */
+        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args); 
         
         start.UseShellExecute = false;
         start.RedirectStandardOutput = true;
@@ -106,17 +107,20 @@ public class ChatboxController : MonoBehaviour
         {
             using (StreamReader reader = process.StandardOutput)
             {
-                string result = reader.ReadToEnd();
-                Debug.Log(result);
-                chatboxText.text = "ChatGPT: " + result;
+                 string result = reader.ReadToEnd();
+                 Debug.Log(result);
+                 chatboxText.text = "ChatGPT: " + result;
 
-                  
-                List<Token> tokens = Parser.Parser.Tokenize(result);
-                Node ast = Parser.Parser.Parse(tokens);
-                Parser.Parser.Execute(ast); // Renvoie null
+
+                 string test = "LEFT(3), RIGHT(2)";
+                 List<Token> tokens = Parser.Parser.Tokenize(test);
+                 List<Node> forest = Parser.Parser.Parse(tokens);
+                 Parser.Parser.Execute(forest); // Renvoie null 
+                
+
 
             }
-        }
+        } 
     }
 
 }

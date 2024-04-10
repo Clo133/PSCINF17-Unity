@@ -26,7 +26,7 @@ namespace Parser {
 
 		// Literals:
 		INTEGER = 0,
-		STRING = 1,
+		STRING = 1, //pour les labels notamment
 
 		// Others:
 		INSTRUCTION = 11
@@ -58,6 +58,9 @@ namespace Parser {
 
   public class Parser {
         public static ChatboxController box = GameObject.FindObjectOfType(typeof(ChatboxController)) as ChatboxController;
+        public static AIController aisprite = GameObject.FindObjectOfType(typeof(AIController)) as AIController;
+        public static PlayerController playersprite = GameObject.FindObjectOfType(typeof(PlayerController)) as PlayerController;
+
         public static bool IsDelimiter(char chr) {
     switch (chr) {
       case '(':
@@ -86,18 +89,18 @@ namespace Parser {
 
         if (i == sequence.Length) break;
         if (current_token_name.Count == 0) {
-        tokens.Add(new Token(TokenType.DELIMITER, current_character.ToString()));
-        i += 1;
+        tokens.Add(new Token(TokenType.DELIMITER, current_character.ToString())); Debug.Log(current_character); 
+                    i += 1;
         } else {
         string token_name = String.Join("", current_token_name); //concatène le tableau de string current_token_name en une unique string
           
         if (char.IsDigit(current_token_name[0])) {
-        tokens.Add(new Token(TokenType.INTEGER, token_name));
+        tokens.Add(new Token(TokenType.INTEGER, token_name)); Debug.Log(token_name);
         } else if (current_token_name[0] == '\'') {
-        tokens.Add(new Token(TokenType.STRING, token_name));
+        tokens.Add(new Token(TokenType.STRING, token_name)); Debug.Log(token_name);
         } else if (char.IsLetter(current_token_name[0])) {
-        tokens.Add(new Token(TokenType.INSTRUCTION, token_name));
-        } else {
+        tokens.Add(new Token(TokenType.INSTRUCTION, token_name)); Debug.Log(token_name);
+                    } else {
                     //box.chatboxText.text = "Error: invalid token name:" + token_name + "t";
                     Debug.Log("Error: invalid token name:" + token_name);
                     }
@@ -106,15 +109,15 @@ namespace Parser {
       return tokens;
     }
 
-    public static Node Parse(List<Token> tokens) {
+    public static List<Node> Parse(List<Token> tokens) {
       int idx = 0;
 
       List<Node> build() {
         List<Node> nodes = new List<Node>();
 
         if ((idx < tokens.Count) && tokens[idx].value != ")") {
-          nodes.Add(new Node(tokens[idx], new List<Node>(0)));
-          idx += 1;
+          nodes.Add(new Node(tokens[idx], new List<Node>(0))); //Debug.Log("parse " + idx + ", " +tokens[idx].value);
+                    idx += 1;
         }
 
         while ((idx < tokens.Count) && (tokens[idx].value != ")")) {
@@ -123,9 +126,9 @@ namespace Parser {
               idx += 1;
               nodes.Last().children = build();
               break;
-            case ",":
-              nodes.Add(new Node(tokens[idx + 1], new List<Node>(0)));
-              idx += 2;
+            case ",": // cas espace et saut de ligne A AJOUTER pb dans le cas d'éléments à deux variables
+              nodes.Add(new Node(tokens[idx + 1], new List<Node>(0))); //Debug.Log("parse_2 " + idx + ", " + tokens[idx + 1].value);
+                            idx += 2;
               break;
             default:
                             box.chatboxText.text = "Misplaces delimiter:" + tokens[idx - 1].value;
@@ -137,7 +140,7 @@ namespace Parser {
         idx += 1;
         return nodes;
       }
-      return build()[0];
+      return build();
     }
 
     public static Tuple<int, int> Label(string label) {
@@ -154,19 +157,23 @@ namespace Parser {
     }
 
     public static object Instruction(Node ast) {
-      AIController aisprite = GameObject.FindObjectOfType(typeof(AIController)) as AIController;
+      
       int d = 1;
             string s;
             switch (ast.label.value) {
                 case "LABEL":
-                    return Label((string)Execute(ast.children[0]));
+                    return null;
+                    //Label((string)Execute(ast.children));//A MODIFIER SI PAS DE RETURN dans instruction
                 case "POINT":
-                    return new Tuple<int, int>((int)Execute(ast.children[0]), (int)Execute(ast.children[1]));
+                    return null;
+                        //new Tuple<int, int>((int)Execute(ast.children[0]), (int)Execute(ast.children[1])); //IDEM
                 case "LEFT":
-                    if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
+                    if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER)
+                    {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
                     aisprite.move(Vector2.left * d);
+
                     return null;
                 case "RIGHT":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
@@ -194,7 +201,6 @@ namespace Parser {
                         s = ast.children[0].label.value ;
                     }
 
-                    PlayerController playersprite = GameObject.FindObjectOfType(typeof(PlayerController)) as PlayerController;
                     aisprite.set_position(playersprite.get_position());
                     Debug.Log(playersprite.get_position()); 
 
@@ -208,32 +214,46 @@ namespace Parser {
             return null;
     }
 
-    public static object Execute(Node ast) {
-
-      switch (ast.label.type) {
-        case TokenType.INSTRUCTION:
-                    Debug.Log("Execute cas instruction");
-          return Instruction(ast);
-        case TokenType.INTEGER:
-                    Debug.Log("Execute cas entier");
-          return Int32.Parse(ast.label.value);
-        case TokenType.STRING:
-                    Debug.Log("Execute cas string");
-          return ast.label.value;
-        default:
-                    box.chatboxText.text = "Error!";
-                    break;
-          // throw new Exception("Error!");
+        public static object Execute(List<Node> forest) {
+            
+            for (int i = 0; i < forest.Count; i++)
+            { //while (aisprite.get_is_moving()) { time; } 
+                Node ast = forest[i];
+                Instruction(ast);
+                Debug.Log("execute " + i + " " + ast.label.value);
+            }
+            return null;
+        }
+       /*foreach (Node ast in forest) {
+                switch (ast.label.type)
+                {
+                    case TokenType.INSTRUCTION:
+                        Debug.Log("Execute cas instruction");
+                        Instruction(ast);
+                        break;
+                    case TokenType.INTEGER:
+                        Debug.Log("Execute cas entier");
+                        //Int32.Parse(ast.label.value);
+                        break;
+                    case TokenType.STRING:
+                        Debug.Log("Execute cas string");
+                        //ast.label.value;
+                        break ;
+                    default:
+                        box.chatboxText.text = "Error!";
+                        break;
+                }
+          
       }
             return null;
-    }
+    } */
 
-       public static void Main(string[] args)
+       /* public static void Main(string[] args)
         {
             string str = "    GOTO ( POINT (\"A\", 7, 6 ) )";
             List<Token> tokens = Tokenize(str);
             Node ast = Parse(tokens);
             Console.WriteLine(ast.label.value);
-        }    
+        }   */  
   }
 }

@@ -8,7 +8,13 @@ public class AIController : MonoBehaviour
 {
     public float moveSpeed;
     public TMP_InputField chatboxInputField;
-    private bool isMoving;
+
+    private bool isMoving = false ;
+    public bool get_is_moving()
+    {
+        return isMoving;
+    }
+
     public static bool isMovingBis = false;
 
     private Vector2 input; 
@@ -24,15 +30,17 @@ public class AIController : MonoBehaviour
     private void Awake(){
         animator = GetComponent<Animator>();
     }
-
+    
     public void move(Vector2 vector) {
         if (!isMoving) {
             var targetPos = transform.position;
             targetPos.x += vector.x;
             targetPos.y += vector.y;
 
-            if (IsWalkable(targetPos))
-                StartCoroutine(Move(targetPos));
+        if (IsWalkable(targetPos))
+        {
+        //{ yield return 
+                    StartCoroutine(Move(targetPos)); }
         }
         //Animation
         //animator.SetBool("isMoving", isMoving);
@@ -40,15 +48,16 @@ public class AIController : MonoBehaviour
 
     public void set_position(Vector2 vector)
     {
-        if (!isMoving)
-        {
+        //if (!isMoving)
+        
             var targetPos = transform.position;
             targetPos.x = vector.x;
             targetPos.y = vector.y;
 
             if (IsWalkable(targetPos))
                 StartCoroutine(Move(targetPos));
-        }
+        Move(targetPos);
+        
     }
 
     private void Update()
@@ -113,7 +122,7 @@ public class AIController : MonoBehaviour
         isMoving = true;
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = targetPos;
