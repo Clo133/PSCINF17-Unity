@@ -125,21 +125,28 @@ public class AIController : MonoBehaviour
     foreach (Parser.Goal move in deplacements_)
     {
         Vector3 targetPos = new Vector3() ;
-            Vector2 vec_ = move.get_vec();
+        Vector2 vec_ = move.get_vec();
         bool relatif = move.get_relatif();
-        
-        if (relatif)
-        {
-            targetPos.x = transform.position.x + vec_.x ;
-            targetPos.y = transform.position.y + vec_.y ;
-        }
 
-        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-        transform.position = targetPos;
+            if (IsWalkable(targetPos)){
+                if (relatif)
+                {
+                    targetPos.x = transform.position.x + vec_.x;
+                    targetPos.y = transform.position.y + vec_.y;
+                }
+                else
+                {
+                    targetPos.x = vec_.x;
+                    targetPos.y = vec_.y;
+                }
+
+                while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+                    yield return null;
+                }
+                transform.position = targetPos;
+            }
     }
     
     }
@@ -150,4 +157,4 @@ public class AIController : MonoBehaviour
         }
         return true;
     }
-}
+}   

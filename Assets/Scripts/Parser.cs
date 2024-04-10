@@ -87,6 +87,7 @@ namespace Parser {
       case '(':
       case ')':
       case ',':
+      case ';':
         return true;
       default:
         return false;
@@ -147,7 +148,7 @@ namespace Parser {
               idx += 1;
               nodes.Last().children = build();
               break;
-            case ",": // cas espace et saut de ligne A AJOUTER pb dans le cas d'éléments à deux variables
+            case ";": // cas espace et saut de ligne A AJOUTER pb dans le cas d'éléments à deux variables
               nodes.Add(new Node(tokens[idx + 1], new List<Node>(0))); //Debug.Log("parse_2 " + idx + ", " + tokens[idx + 1].value);
                             idx += 2;
               break;
@@ -226,7 +227,7 @@ namespace Parser {
                         s = ast.children[0].label.value ;
                     }
 
-                    aisprite.set_position(playersprite.get_position());
+                    deplacements.Add(new Goal(playersprite.get_position(), false));
                     Debug.Log(playersprite.get_position()); 
 
                     return null;
@@ -248,6 +249,7 @@ namespace Parser {
                 Debug.Log("execute " + i + " " + ast.label.value);
             }
             aisprite.move(deplacements);
+            deplacements = new List<Goal>(); 
             return null;
         }
        
