@@ -97,7 +97,7 @@ public class ChatboxController : MonoBehaviour
         start.Arguments = string.Format(start.FileName + " \"{0}\"", args); 
         
         
-        /*start.FileName = "python";
+      /*  start.FileName = "python";
         start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
         start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args); */
         
@@ -112,7 +112,7 @@ public class ChatboxController : MonoBehaviour
                  chatboxText.text = "ChatGPT: " + result;
 
 
-                 string test = "RIGHT(10); GOTO() ;DOWN()";
+                 string test = "RIGHT(10); GOTO('BUTTON')";
                  List<Token> tokens = Parser.Parser.Tokenize(result);
                  List<Node> forest = Parser.Parser.Parse(tokens);
                  Parser.Parser.Execute(forest); // Renvoie null 

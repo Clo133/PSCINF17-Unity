@@ -224,21 +224,53 @@ namespace Parser {
                 case "GOTO":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.STRING)
                     {
-                        s = ast.children[0].label.value ;
+                        Debug.Log("est entré dans le if du goto");
+                        s = ast.children[0].label.value;
+                        deplacements.Add(new Goal(position_objet(s), false));
+                        return null;
                     }
+                    else
+                    {
+                        deplacements.Add(new Goal(playersprite.get_position(), false));
+                        
 
-                    deplacements.Add(new Goal(playersprite.get_position(), false));
-                    Debug.Log(playersprite.get_position()); 
-
-                    return null;
+                        return null;
+                    }
 
                 default:
                     box.chatboxText.text = "Invalid instruction: " + ast.label.value;
-                    break;
+                    return null;
+                    //break;
           // throw new Exception("Invalid instruction: " + ast.label.value);
       }
             return null;
     }
+
+        public static Vector2 position_objet(string s)
+        {
+            Debug.Log("est entré dans position objet");
+            switch (s)
+            {
+                case "'BUTTON'":
+                    Debug.Log("est entré dans case Button");
+                    Vector2 vec = new Vector2((float)-7.61, (float)(2*Math.PI));
+                    return vec;
+                case "'FRIEND'":
+                    Debug.Log("est entré dans case Friend");
+                    Debug.Log(playersprite.get_position());
+                    return playersprite.get_position();
+                case "'SOUTH_GARDEN'":
+                    Debug.Log("en entré dans case South garden");
+                    return new Vector2((float)3.39, (float)-5.58);
+                case "'NORTH_GARDEN'":
+                    Debug.Log("est entré dans case north garden");
+                    return new Vector2((float)3.39, (float)5.58);
+                case "'VIOLET_PYRAMID'":
+                    Debug.Log("est entré dans case violet pyramid");
+                    return new Vector2((float)13.39, (float)0);
+                default: return Vector2.up;
+            }
+        }
 
         public static object Execute(List<Node> forest) {
             

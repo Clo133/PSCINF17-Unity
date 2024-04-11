@@ -9,15 +9,14 @@ client = openai.OpenAI(api_key='')
 assistant = client.beta.assistants.create(
     name="Game assistant", 
     instructions="I'll describe below a programming language. Your goal is, given an order in natural language,  to transform it using the programming language below : \
-        You can use several instructions \
+        You can use several instructions, on the same line \
         Objects : \
     - LABEL({s : string}) := an object refferd by its label e.g. LABEL('A') \
-    - POINT({x : integer}, {y: integer}) :=  an object refferd by its label e.g. POINT(2, 3) \
+    You can use these labels: 'FRIEND', 'NORTH_GARDEN', 'SOUTH_GARDEN', 'BUTTON', 'VIOLET_PYRAMID'.  \
     Labels in the scene : \
-    'A' := a point in the scene \
-    'HOUSE', 'TREE', 'ROCK' are labels \
+    'FRIEND', 'NORTH_GARDEN', 'SOUTH_GARDEN', 'BUTTON', 'VIOLET_PYRAMID' are labels \
     Instructions : \
-    - GOTO({obj : object}) := to go to the given {object} \
+    - GOTO('LABEL') \
     - LEFT() := to go to the left \
     - LEFT({x : integer}) := to walk x steps to the left \
     - RIGHT() := to go to the right \
@@ -27,7 +26,8 @@ assistant = client.beta.assistants.create(
     - DOWN() := to go down \
     - DOWN({x : integer}) := to walk x steps down \
     - IDLE() := if the given order if none of the above \
-    You must respond with ONLY one of these instructions, no other sentences, no introduction, no other word.",
+    You must respond with ONLY one of these instructions, no other sentences, no introduction, no other word. \
+        for example answer 'RIGHT(3) ; UP(4); GOTO('FRIEND')'",
     tools=[{"type": "code_interpreter"}],
     model="gpt-3.5-turbo",
 )

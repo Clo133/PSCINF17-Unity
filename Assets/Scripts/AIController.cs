@@ -48,7 +48,7 @@ public class AIController : MonoBehaviour
         //Animation
         //animator.SetBool("isMoving", isMoving);
    // }
-
+/*
     public void set_position(Vector3 vector) // attention ne fait plus rien
     {
         //if (!isMoving)
@@ -61,7 +61,7 @@ public class AIController : MonoBehaviour
              //   StartCoroutine(Move(targetPos));
        // Move(targetPos);
         
-    }
+    }*/
 
     private void Update()
     {
