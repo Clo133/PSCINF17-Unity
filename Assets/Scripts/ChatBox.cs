@@ -89,17 +89,20 @@ public class ChatboxController : MonoBehaviour
 
         System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
 
+        /*
         //Nom du script Python
         string PythonScriptName = "Assistant_pour_C#.py";
         //Recuperation de l'adresse du script
         string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
         string scriptsFolderPath = Path.Combine(unityProjectPath, "Assets" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + PythonScriptName);
+        start.FileName = "python";
         start.Arguments = string.Format(start.FileName + " \"{0}\"", args); 
+        //start.Arguments = string.Format(File + " \"{0}\"", args); 
+        */
         
-        
-      /*  start.FileName = "python";
+
         start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
-        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args); */
+        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args);
         
         start.UseShellExecute = false;
         start.RedirectStandardOutput = true;
@@ -112,8 +115,12 @@ public class ChatboxController : MonoBehaviour
                  chatboxText.text = "ChatGPT: " + result;
 
 
-                 string test = "RIGHT(10); GOTO('BUTTON')";
-                 List<Token> tokens = Parser.Parser.Tokenize(result);
+                 string test = "RIGHT(10); GOTO('BUTTON'); UP(3)";
+
+                 //TEST CHATBOX
+                 chatboxText.text = "ChatGPT: " + test;
+
+                 List<Token> tokens = Parser.Parser.Tokenize(test);
                  List<Node> forest = Parser.Parser.Parse(tokens);
                  Parser.Parser.Execute(forest); // Renvoie null 
                 
