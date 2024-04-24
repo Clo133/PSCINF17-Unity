@@ -88,12 +88,23 @@ public class ChatboxController : MonoBehaviour
         Debug.Log(args);
 
         System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> fd9243601247ca37fbd2a09f94610d3147e801ca
+>>>>>>> 0129e15aa8eba30d997550e94370363c001466cb
         /*
         //Nom du script Python
         string PythonScriptName = "Assistant_pour_C#.py";
         //Recuperation de l'adresse du script
         string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
         string scriptsFolderPath = Path.Combine(unityProjectPath, "Assets" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + PythonScriptName);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 0129e15aa8eba30d997550e94370363c001466cb
         start.Arguments = string.Format(start.FileName + " \"{0}\"", args); */
         
         
@@ -104,6 +115,20 @@ public class ChatboxController : MonoBehaviour
         //start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Requête_GPT_pour_C#.py \"{0}\"", args);
 
 
+<<<<<<< HEAD
+=======
+=======
+        start.FileName = "python";
+        start.Arguments = string.Format(start.FileName + " \"{0}\"", args); 
+        //start.Arguments = string.Format(File + " \"{0}\"", args); 
+        */
+        
+
+        start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
+        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args);
+        
+>>>>>>> fd9243601247ca37fbd2a09f94610d3147e801ca
+>>>>>>> 0129e15aa8eba30d997550e94370363c001466cb
         start.UseShellExecute = false;
         start.RedirectStandardOutput = true;
         using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(start))
@@ -115,8 +140,12 @@ public class ChatboxController : MonoBehaviour
                  chatboxText.text = "ChatGPT: " + result;
 
 
-                 string test = "RIGHT(10); GOTO('BUTTON')";
-                 List<Token> tokens = Parser.Parser.Tokenize(result);
+                 string test = "RIGHT(10); GOTO('BUTTON'); UP(3)";
+
+                 //TEST CHATBOX
+                 chatboxText.text = "ChatGPT: " + test;
+
+                 List<Token> tokens = Parser.Parser.Tokenize(test);
                  List<Node> forest = Parser.Parser.Parse(tokens);
                  Parser.Parser.Execute(forest); // Renvoie null 
                 
