@@ -88,13 +88,28 @@ public class ChatboxController : MonoBehaviour
         Debug.Log(args);
 
         System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
+<<<<<<< HEAD
+=======
 
+>>>>>>> fd9243601247ca37fbd2a09f94610d3147e801ca
         /*
         //Nom du script Python
         string PythonScriptName = "Assistant_pour_C#.py";
         //Recuperation de l'adresse du script
         string unityProjectPath = Path.GetDirectoryName(Application.dataPath);
         string scriptsFolderPath = Path.Combine(unityProjectPath, "Assets" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + PythonScriptName);
+<<<<<<< HEAD
+        start.Arguments = string.Format(start.FileName + " \"{0}\"", args); */
+        
+        
+       start.FileName = "python";
+        start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
+        start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args);
+
+        //start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Requête_GPT_pour_C#.py \"{0}\"", args);
+
+
+=======
         start.FileName = "python";
         start.Arguments = string.Format(start.FileName + " \"{0}\"", args); 
         //start.Arguments = string.Format(File + " \"{0}\"", args); 
@@ -104,6 +119,7 @@ public class ChatboxController : MonoBehaviour
         start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
         start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args);
         
+>>>>>>> fd9243601247ca37fbd2a09f94610d3147e801ca
         start.UseShellExecute = false;
         start.RedirectStandardOutput = true;
         using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(start))
