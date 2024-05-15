@@ -126,15 +126,15 @@ public class AIController : MonoBehaviour
     {
         Vector3 targetPos = new Vector3() ;
         Vector2 vec_ = move.get_vec();
-        bool relatif = move.get_relatif();
+        int cat = move.get_cat();
 
             if (IsWalkable(targetPos)){
-                if (relatif)
+                if (cat == 1)
                 {
                     targetPos.x = transform.position.x + vec_.x;
                     targetPos.y = transform.position.y + vec_.y;
                 }
-                else
+                else //(cat== 0)
                 {
                     targetPos.x = vec_.x;
                     targetPos.y = vec_.y;

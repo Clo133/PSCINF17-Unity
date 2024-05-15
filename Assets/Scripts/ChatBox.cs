@@ -130,15 +130,13 @@ public class ChatboxController : MonoBehaviour
             {
                  string result = reader.ReadToEnd();
                  Debug.Log(result);
-                 chatboxText.text = "ChatGPT: " + result;
+                 chatboxText.text = "GPT: " + result;
 
+                //TEST CHATBOX
+                //string test = "RIGHT(10); GOTO('BUTTON'); UP(3)";
+                //chatboxText.text = "Test: " + test;
 
-                 string test = "RIGHT(10); GOTO('BUTTON'); UP(3)";
-
-                 //TEST CHATBOX
-                 chatboxText.text = "ChatGPT: " + result;
-
-                 List<Token> tokens = Parser.Parser.Tokenize(result);
+                List<Token> tokens = Parser.Parser.Tokenize(result);
                  List<Node> forest = Parser.Parser.Parse(tokens);
                  Parser.Parser.Execute(forest); // Renvoie null 
                 
