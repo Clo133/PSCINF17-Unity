@@ -59,20 +59,20 @@ namespace Parser {
     public class Goal
     {
         private Vector2 vec;
-        private bool relatif; //true si déplacement relatif false si il faut se rendre en vec*
+        private int cat; //true si déplacement relatif false si il faut se rendre en vec*
 
-        public Goal(Vector2 vec_, bool relatif_)
+        public Goal(Vector2 vec_, int cat_)
         {
             vec = vec_;
-            relatif = relatif_;
+            cat = cat_;
         }
         public Vector2 get_vec()
         {
             return vec;
         }
-        public bool get_relatif()
+        public int get_cat()
         {
-            return relatif;
+            return cat;
         }
     }
 
@@ -194,7 +194,7 @@ namespace Parser {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
                     //aisprite.move(Vector2.left * d);
-                    Goal g = new Goal(Vector2.left * d, true);
+                    Goal g = new Goal(Vector2.left * d, 1);
                     deplacements.Add(g);
 
                     return null;
@@ -203,21 +203,21 @@ namespace Parser {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
                     //aisprite.move(Vector2.right * d);
-                    deplacements.Add(new Goal(Vector2.right * d, true));
+                    deplacements.Add(new Goal(Vector2.right * d, 1));
                     return null;
                 case "UP":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
                     //aisprite.move(Vector2.up * d);
-                    deplacements.Add(new Goal(Vector2.up * d, true));
+                    deplacements.Add(new Goal(Vector2.up * d, 1));
                     return null;
                 case "DOWN":
                     if (ast.children.Count > 0 && ast.children[0].label.type == TokenType.INTEGER) {
                         d = Int32.Parse(ast.children[0].label.value);
                     }
                     //aisprite.move(Vector2.down * d);
-                    deplacements.Add( new Goal(Vector2.down * d, true));
+                    deplacements.Add( new Goal(Vector2.down * d, 1));
                     return null;
                 case "IDLE":
                     return null;
@@ -226,14 +226,12 @@ namespace Parser {
                     {
                         Debug.Log("est entré dans le if du goto");
                         s = ast.children[0].label.value;
-                        deplacements.Add(new Goal(position_objet(s), false));
+                        deplacements.Add(position_objet(s));
                         return null;
                     }
                     else
                     {
-                        deplacements.Add(new Goal(playersprite.get_position(), false));
-                        
-
+                        //deplacements.Add(new Goal(playersprite.get_position(), 0));
                         return null;
                     }
 
@@ -246,7 +244,7 @@ namespace Parser {
             return null;
     }
 
-        public static Vector2 position_objet(string s)
+        public static Goal position_objet(string s)
         {
             Debug.Log("est entré dans position objet");
             switch (s)
@@ -254,21 +252,53 @@ namespace Parser {
                 case "'BUTTON'":
                     Debug.Log("est entré dans case Button");
                     Vector2 vec = new Vector2((float)-7.61, (float)(2*Math.PI));
-                    return vec;
+                    return new Goal(vec, 3);
                 case "'FRIEND'":
                     Debug.Log("est entré dans case Friend");
                     Debug.Log(playersprite.get_position());
-                    return playersprite.get_position();
+                    return new Goal(playersprite.get_position(), 0);
                 case "'SOUTH_GARDEN'":
                     Debug.Log("en entré dans case South garden");
-                    return new Vector2((float)3.39, (float)-5.58);
+                    return new Goal(new Vector2((float)3.39, (float)-5.58), 0);
                 case "'NORTH_GARDEN'":
                     Debug.Log("est entré dans case north garden");
-                    return new Vector2((float)3.39, (float)5.58);
+                    return new Goal(new Vector2((float)3.39, (float)5.58), 0);
                 case "'VIOLET_PYRAMID'":
                     Debug.Log("est entré dans case violet pyramid");
-                    return new Vector2((float)13.39, (float)0);
-                default: return Vector2.up;
+                    return new Goal(new Vector2((float)13.39, (float)0), 0);
+                case "'DOOR'":
+                    return new Goal(new Vector2((float)-4.61, (float)-8.08), 0);
+                case "'MIDDLE_CLOUD'":
+                    return new Goal(new Vector2((float)17.39, (float)0), 0);
+                case "'UPPER_CLOUD'":
+                    return new Goal(new Vector2((float)18.5, (float)5.7), 0);
+                case "'LITTLE_CLOUD'":
+                    return new Goal(new Vector2((float)-5, (float)2.65), 0);
+                case "'SOUTH_STAIRS'":
+                    return new Goal(new Vector2((float)-14.61, (float)-5.08), 0);
+                case "'NORTH_STAIRS'":
+                    return new Goal(new Vector2((float)-14.61, (float)4.2), 0);
+                case "'MIDDLE_GREY_PYRAMID'":
+                    return new Goal(new Vector2((float)-10.61, (float)-0.5), 0);
+                case "'NORTH_GREY_PYRAMID'":
+                    return new Goal(new Vector2(-10.61f, 4.0f), 0);
+                case "'SOUTH_GREY_PYRAMID'":
+                    return new Goal(new Vector2(-10.61f, (float)-4.8), 0);
+                case "'MIDDLE_BROWN_PYRAMID'":
+                    return new Goal(new Vector2((float)9.5, (float)-0.5), 0);
+                case "'NORTH_BROWN_PYRAMID'":
+                    return new Goal(new Vector2((float)9.5, (float)3.5), 0);
+                case "'SOUTH_BROWN_PYRAMID'":
+                    return new Goal(new Vector2((float)9.5, (float)-4.8), 0);
+                case "'NORTH_SEA'":
+                    return new Goal(new Vector2(0, 10), 2);
+                case "'SOUTH_SEA'":
+                    return new Goal(new Vector2(0, -10), 2);
+                /* case "'NORTH_SEA'":
+                     return new Vector2((float));
+                 case "'NORTH_GREY_PYRAMID'":
+                */
+                default: return new Goal(new Vector2(0,0), 1);
             }
         }
 
