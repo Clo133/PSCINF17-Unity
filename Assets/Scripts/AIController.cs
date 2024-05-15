@@ -8,6 +8,7 @@ public class AIController : MonoBehaviour
 {
     public float moveSpeed;
     public TMP_InputField chatboxInputField;
+    public GameObject door;
 
     private bool isMoving = false ;
     public bool get_is_moving()
@@ -127,17 +128,44 @@ public class AIController : MonoBehaviour
         Vector3 targetPos = new Vector3() ;
         Vector2 vec_ = move.get_vec();
         int cat = move.get_cat();
+        Door doorObj = door.GetComponent<Door>();
 
             if (IsWalkable(targetPos)){
                 if (cat == 1)
                 {
                     targetPos.x = transform.position.x + vec_.x;
                     targetPos.y = transform.position.y + vec_.y;
+                    doorObj.Close();
                 }
-                else //(cat== 0)
+                else if (cat == 0)
                 {
                     targetPos.x = vec_.x;
                     targetPos.y = vec_.y;
+                    doorObj.Close();
+                }
+                else if (cat == 2)
+                {
+                    targetPos.y = vec_.y;
+                    float x = transform.position.x;
+                    if (x < -16)
+                    {
+                        targetPos.x = -16;
+                    }
+                    else if (x > 10)
+                    {
+                        targetPos.x = 10;
+                    }
+                    else
+                    {
+                        targetPos.x = x;
+                    }
+                    doorObj.Close();
+                }
+                else
+                {
+                    targetPos.x = vec_.x;
+                    targetPos.y = vec_.y;
+               
                 }
 
                 while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
@@ -146,6 +174,11 @@ public class AIController : MonoBehaviour
                     yield return null;
                 }
                 transform.position = targetPos;
+               if (cat == 3)
+                {
+                    doorObj.Open();
+                }
+                
             }
     }
     

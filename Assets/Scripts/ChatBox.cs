@@ -47,14 +47,18 @@ public class ChatboxController : MonoBehaviour
         {
             // Toggle the chatbox visibility
             ToggleChatbox();
+            
         }
 
-        if (Input.GetKeyDown(KeyCode.P) && Input.GetKeyDown(KeyCode.Q))
-            {
-            chatboxPanel.SetActive(false);
-        }
-        
-    }
+
+
+
+                  if (Input.GetKeyDown(KeyCode.P) && Input.GetKeyDown(KeyCode.Q))
+                  {
+                      chatboxPanel.SetActive(false);
+                  }
+
+            }
 
     
 

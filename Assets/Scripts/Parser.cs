@@ -252,7 +252,7 @@ namespace Parser {
                 case "'BUTTON'":
                     Debug.Log("est entré dans case Button");
                     Vector2 vec = new Vector2((float)-7.61, (float)(2*Math.PI));
-                    return new Goal(vec, 0);
+                    return new Goal(vec, 3);
                 case "'FRIEND'":
                     Debug.Log("est entré dans case Friend");
                     Debug.Log(playersprite.get_position());
@@ -281,15 +281,19 @@ namespace Parser {
                 case "'MIDDLE_GREY_PYRAMID'":
                     return new Goal(new Vector2((float)-10.61, (float)-0.5), 0);
                 case "'NORTH_GREY_PYRAMID'":
-                    return new Goal(new Vector2((float)-10.61, (float)4), 0);
+                    return new Goal(new Vector2(-10.61f, 4.0f), 0);
                 case "'SOUTH_GREY_PYRAMID'":
-                    return new Goal(new Vector2((float)-10.61, (float)-4.8), 0);
+                    return new Goal(new Vector2(-10.61f, (float)-4.8), 0);
                 case "'MIDDLE_BROWN_PYRAMID'":
                     return new Goal(new Vector2((float)9.5, (float)-0.5), 0);
                 case "'NORTH_BROWN_PYRAMID'":
                     return new Goal(new Vector2((float)9.5, (float)3.5), 0);
                 case "'SOUTH_BROWN_PYRAMID'":
                     return new Goal(new Vector2((float)9.5, (float)-4.8), 0);
+                case "'NORTH_SEA'":
+                    return new Goal(new Vector2(0, 10), 2);
+                case "'SOUTH_SEA'":
+                    return new Goal(new Vector2(0, -10), 2);
                 /* case "'NORTH_SEA'":
                      return new Vector2((float));
                  case "'NORTH_GREY_PYRAMID'":
