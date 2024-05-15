@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     public LayerMask solidObjectsLayer;
+    public LayerMask doorLayer;
 
     private void Awake(){
         animator = GetComponent<Animator>();
@@ -68,11 +70,15 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
 
+        if(targetPos.x > 14.5){
+            SceneManager.LoadScene(2);
+        }
         isMoving = false;
     }
 
     private bool IsWalkable(Vector3 targetPos){
-        if (Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) != null){
+        if (Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) != null || Physics2D.OverlapCircle(targetPos, 0.2f, doorLayer) != null)
+        {
             return false;
         }
         return true;
