@@ -85,6 +85,10 @@ public class ChatboxController : MonoBehaviour
 
     public void run_cmd(string args)
     {
+        if(chatboxInputField.text =="" || chatboxInputField.text =="Recording..." || chatboxInputField.text == "Sending..."){
+            return;
+        }
+
         Debug.Log(args);
 
         System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
@@ -113,7 +117,7 @@ public class ChatboxController : MonoBehaviour
         start.FileName = "C:\\Users\\cloti\\anaconda3\\python";
         start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Assistant_pour_C#.py \"{0}\"", args);
 
-        //start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Requête_GPT_pour_C#.py \"{0}\"", args);
+        //start.Arguments = string.Format("C:\\Users\\cloti\\Documents\\Cours\\PSC\\Python\\Requï¿½te_GPT_pour_C#.py \"{0}\"", args);
 
 
         //start.Arguments = string.Format(start.FileName + " \"{0}\"", args); 

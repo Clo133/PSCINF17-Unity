@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -68,6 +69,9 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
 
+        if(targetPos.x > 14.5){
+            SceneManager.LoadScene(2);
+        }
         isMoving = false;
     }
 
